@@ -1,3 +1,4 @@
 Flask
 werkzeug
 gunicorn  # Necesario para desplegar la app en producción
+pip install -r requirements.txt
