@@ -1,1 +1,79 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #f4f4f4;
+}
 
+#chat-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+#messages {
+    height: 300px;
+    overflow-y: scroll;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 15px;
+    background-color: #f9f9f9;
+}
+
+#messages p {
+    margin: 5px 0;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.system {
+    background-color: #e6f7ff;
+    color: #005f79;
+}
+
+.user {
+    background-color: #f0f0f0;
+    text-align: right;
+}
+
+#controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#yes-no-buttons button {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    flex-grow: 1;
+}
+
+#yes-no-buttons button:first-child {
+    background-color: #4CAF50;
+    color: white;
+    margin-right: 10px;
+}
+
+#yes-no-buttons button:last-child {
+    background-color: #f44336;
+    color: white;
+}
+
+textarea, input[type="text"], input[type="password"], select {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#user-input {
+    resize: none;
+    height: 60px;
+}
