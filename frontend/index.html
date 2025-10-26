@@ -1,1 +1,166 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Big Tools | Chatbot de Diagnóstico</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="login-container">
+        <h2>Acceso Big Tools</h2>
+        <input type="text" id="username" placeholder="Usuario (admin/tecnico_1)">
+        <input type="password" id="password" placeholder="Contraseña">
+        <button onclick="loginAndStartChat()">Iniciar Sesión</button>
+    </div>
 
+    <div id="chat-container" style="display:none;">
+        <h1>🤖 Chatbot de Diagnóstico Big Tools</h1>
+        <div id="messages"></div>
+
+        <div id="controls">
+            <select id="machine-select"></select>
+            <textarea id="user-input" placeholder="Describe el problema (ej: El motor no arranca)"></textarea>
+            <button onclick="sendMessage()">Enviar</button>
+            <div id="yes-no-buttons" style="display:none;">
+                <button onclick="sendResponse('si')">Sí</button>
+                <button onclick="sendResponse('no')">No</button>
+            </div>
+        </div>
+        
+        <p id="status-message"></p>
+    </div>
+
+    <script>
+        const API_URL = 'http://127.0.0.1:5000/api/diagnostico';
+        let MACHINE_OPTIONS = {};
+        let authHeader = '';
+        let estadoSesion = null; // Memoria del motor de inferencia
+
+        // --- AUTENTICACIÓN ---
+        function loginAndStartChat() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const encoded = btoa(`${username}:${password}`);
+            authHeader = `Basic ${encoded}`;
+
+            // Intenta una llamada simple para verificar credenciales (usando el listar)
+            fetchMachines();
+
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'block';
+            addMessage('system', 'Acceso concedido. Por favor, selecciona una máquina y describe el problema.');
+        }
+
+        // --- CHATBOT CORE LOGIC ---
+
+        function addMessage(sender, text) {
+            const msgDiv = document.getElementById('messages');
+            const p = document.createElement('p');
+            p.className = sender;
+            p.innerHTML = `<strong>${sender === 'system' ? '🤖 Experto' : '🧑 Tú'}</strong>: ${text}`;
+            msgDiv.appendChild(p);
+            msgDiv.scrollTop = msgDiv.scrollHeight;
+        }
+
+        async function fetchMachines() {
+            // Este endpoint debería listar las máquinas disponibles
+            // En un sistema real, crearías un endpoint para esto, pero lo simulamos
+             MACHINE_OPTIONS = {
+                "karcher_hds": "Hidrolavadora Kärcher HDS",
+                "lincoln_ranger": "Soldadora Lincoln RANGER 305D",
+                "generac_guardian": "Generador Generac Guardian",
+                "cummins_pcc33": "Generador Cummins PowerCommand 3.3"
+            };
+            const select = document.getElementById('machine-select');
+            for (const [id, name] of Object.entries(MACHINE_OPTIONS)) {
+                const option = new Option(name, id);
+                select.add(option);
+            }
+        }
+
+        function sendMessage() {
+            const machineId = document.getElementById('machine-select').value;
+            const userInput = document.getElementById('user-input');
+            const description = userInput.value;
+            
+            if (estadoSesion !== null) {
+                addMessage('system', 'Por favor, usa los botones "Sí" o "No" para continuar el diagnóstico.');
+                return;
+            }
+
+            if (!description || !machineId) {
+                addMessage('system', 'Selecciona una máquina y describe el problema para iniciar.');
+                return;
+            }
+
+            addMessage('user', description);
+            userInput.value = '';
+            
+            // Iniciar diagnóstico (Primera llamada)
+            sendToAPI({
+                id_maquina: machineId,
+                descripcion: description,
+                estado: null // Indica inicio
+            });
+        }
+
+        function sendResponse(response) {
+            if (!estadoSesion) return;
+
+            addMessage('user', response.toUpperCase());
+            
+            // Continuar diagnóstico (Llamadas subsiguientes)
+            sendToAPI({
+                id_maquina: estadoSesion.id_maquina,
+                respuesta: response,
+                estado: estadoSesion // El objeto de estado es la memoria
+            });
+            
+            document.getElementById('yes-no-buttons').style.display = 'none';
+        }
+
+
+        async function sendToAPI(payload) {
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Authorization': authHeader
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await response.json();
+                
+                if (data.error) {
+                    addMessage('system', `ERROR: ${data.error}`);
+                    estadoSesion = null;
+                    return;
+                }
+
+                // 1. Guardar el nuevo estado de la sesión
+                estadoSesion = data.estado || null;
+
+                // 2. Procesar la respuesta y actualizar la UI
+                if (data.tipo === 'pregunta') {
+                    addMessage('system', data.pregunta);
+                    document.getElementById('yes-no-buttons').style.display = 'flex';
+                } else if (data.tipo === 'instruccion') {
+                    addMessage('system', `INSTRUCCIÓN (${data.estado.modo.toUpperCase()}): ${data.texto}`);
+                    addMessage('system', "¿Se solucionó el problema con este paso?");
+                    document.getElementById('yes-no-buttons').style.display = 'flex';
+                } else if (data.tipo === 'final') {
+                    addMessage('system', `FIN DE SESIÓN: ${data.mensaje}`);
+                    estadoSesion = null;
+                }
+
+            } catch (error) {
+                addMessage('system', "Lo siento, la API no respondió. Asegúrate de que el servidor está corriendo en http://127.0.0.1:5000.");
+                console.error("Fetch error:", error);
+            }
+        }
+        
+    </script>
+</body>
+</html>
