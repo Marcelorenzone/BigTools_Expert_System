@@ -1,6 +1,6 @@
-# 🛠️ Big Tools: Sistema Experto de Diagnóstico y Mantenimiento
+#  Big Tools: Sistema Experto de Diagnóstico y Mantenimiento
 
-## 💡 Descripción del Proyecto
+## Descripción del Proyecto
 
 Este proyecto implementa un **Sistema Experto Multimáquina** en Python, diseñado para asistir a técnicos y personal de Big Tools en el diagnóstico de fallas y la guía de mantenimiento paso a paso para equipos industriales (Generadores, Hidrolavadoras, etc.).
 
@@ -15,7 +15,7 @@ La lógica de diagnóstico utiliza un **Motor de Inferencia** (lógica Akinator 
 
 ***
 
-## 🚀 Estructura del Repositorio
+## Estructura del Repositorio
 
 | Carpeta / Archivo | Contenido | Rol |
 | :--- | :--- | :--- |
@@ -27,7 +27,7 @@ La lógica de diagnóstico utiliza un **Motor de Inferencia** (lógica Akinator 
 
 ***
 
-## ⚙️ Instalación y Ejecución
+##  Instalación y Ejecución
 
 Sigue estos pasos para poner el sistema en funcionamiento en tu entorno local.
 
