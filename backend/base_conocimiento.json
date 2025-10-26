@@ -1,1 +1,112 @@
+{
+  "__v": 1,
+  "description": "Base de Conocimientos para Diagnóstico de Generadores y Equipos Industriales (Kärcher, Lincoln, Generac, Cummins)",
+  "entries": [
+    {
+      "name": "FALLA_KARCHER_SIN_PRESION",
+      "description": "Hidrolavadora: La bomba no genera o pierde presión continuamente.",
+      "props": [
+        "MAQUINA: Karcher HDS",
+        "SINTOMA: Presion_baja",
+        "SINTOMA: Ajuste_MIN",
+        "PREGUNTA: Se_ha_limpiado_el_filtro_fino",
+        "SOLUCION_PASO_1: Verificar_ajuste_MAX",
+        "SOLUCION_PASO_2: Purgar_aire_de_la_bomba",
+        "SOLUCION_PASO_3: Limpiar_tamices_y_filtros"
+      ]
+    },
+    {
+      "name": "FALLA_KARCHER_QUEMADOR_NO_ENCIENDE",
+      "description": "Hidrolavadora: El quemador no enciende (no hay agua caliente/vapor).",
+      "props": [
+        "MAQUINA: Karcher HDS",
+        "SINTOMA: Led_averia_quemador_ON",
+        "SINTOMA: Sin_combustible_o_agua",
+        "PREGUNTA: Se_ha_rellenado_combustible_y_sistema_cuidado",
+        "SOLUCION_PASO_1: Rellenar_combustible_y_comprobar_tuberias",
+        "SOLUCION_PASO_2: Limpiar_tamiz_seguridad_agua",
+        "SOLUCION_PASO_3: Contactar_servicio_tecnico"
+      ]
+    },
+    {
+      "name": "FALLA_LINCOLN_MOTOR_NO_ENCIENDE",
+      "description": "Soldadora Lincoln: El motor gira ('crank') pero no enciende ('start').",
+      "props": [
+        "MAQUINA: Lincoln Ranger 305D",
+        "SINTOMA: Motor_gira_no_arranca",
+        "SINTOMA: Baja_presion_aceite",
+        "PREGUNTA: Valvula_combustible_cerrada",
+        "SOLUCION_PASO_1: Abrir_valvula_combustible_y_purgar_sistema",
+        "SOLUCION_PASO_2: Reemplazar_filtros_combustible_y_aire",
+        "SOLUCION_PASO_3: Contactar_servicio_autorizado_motor"
+      ]
+    },
+    {
+      "name": "FALLA_LINCOLN_NO_SOLDADURA",
+      "description": "Soldadora Lincoln: No hay salida de potencia de soldadura.",
+      "props": [
+        "MAQUINA: Lincoln Ranger 305D",
+        "SINTOMA: No_hay_arco_electrico",
+        "SINTOMA: Voltaje_0",
+        "PREGUNTA: Interruptor_Weld_Terminals_ON",
+        "SOLUCION_PASO_1: Asegurar_conexion_de_tierra_firme",
+        "SOLUCION_PASO_2: Colocar_interruptor_Weld_Terminals_ON",
+        "SOLUCION_PASO_3: Reducir_longitud_cables_soldadura"
+      ]
+    },
+    {
+      "name": "FALLA_GENERAC_ARRANQUE_FALLIDO",
+      "description": "Generador Generac: La unidad no arranca en modo AUTO (Fusible, Combustible).",
+      "props": [
+        "MAQUINA: Generac Guardian",
+        "SINTOMA: Arranque_fallido_ROJO",
+        "SINTOMA: Fusible_7_5A_quemado",
+        "PREGUNTA: Se_ha_comprobado_el_fusible_7_5A",
+        "SOLUCION_PASO_1: Sustituir_fusible_7_5A_tipo_ATO",
+        "SOLUCION_PASO_2: Comprobar_valvula_combustible_ON",
+        "SOLUCION_PASO_3: Intentar_arranque_MANUAL"
+      ]
+    },
+    {
+      "name": "FALLA_CUMMINS_151_ALTA_TEMP",
+      "description": "Generador Cummins: Cód. 151. Parada por alta temperatura del refrigerante.",
+      "props": [
+        "MAQUINA: Cummins PowerCommand 3.3",
+        "SINTOMA: LED_PARADA_ON",
+        "SINTOMA: Codigo_151_activo",
+        "PREGUNTA: Nivel_refrigerante_correcto",
+        "SOLUCION_PASO_1: Dejar_enfriar_y_rellenar_refrigerante",
+        "SOLUCION_PASO_2: Comprobar_correa_ventilador_y_obstrucciones",
+        "SOLUCION_PASO_3: Reiniciar_el_control_tras_enfriamiento"
+      ]
+    },
+    {
+      "name": "FALLA_CUMMINS_415_BAJA_PRESION_ACEITE",
+      "description": "Generador Cummins: Cód. 415. Parada por baja presión de aceite.",
+      "props": [
+        "MAQUINA: Cummins PowerCommand 3.3",
+        "SINTOMA: LED_PARADA_ON",
+        "SINTOMA: Codigo_415_activo",
+        "PREGUNTA: Nivel_aceite_correcto",
+        "SOLUCION_PASO_1: Dejar_enfriar_y_comprobar_nivel_aceite",
+        "SOLUCION_PASO_2: Rellenar_o_cambiar_filtros_de_aceite",
+        "SOLUCION_PASO_3: Reiniciar_el_control"
+      ]
+    },
+    {
+      "name": "ADVERTENCIA_CUMMINS_441_BATERIA_BAJA",
+      "description": "Generador Cummins: Cód. 441. Advertencia de voltaje de batería bajo.",
+      "props": [
+        "MAQUINA: Cummins PowerCommand 3.3",
+        "SINTOMA: LED_ADVERTENCIA_ON",
+        "SINTOMA: Codigo_441_activo",
+        "PREGUNTA: Conexiones_bateria_limpias_y_apretadas",
+        "SOLUCION_PASO_1: Limpiar_y_apretar_terminales_bateria",
+        "SOLUCION_PASO_2: Recargar_o_sustituir_bateria",
+        "SOLUCION_PASO_3: Reiniciar_el_control_para_borrar_advertencia"
+      ]
+    }
+  ]
+}
+
 
