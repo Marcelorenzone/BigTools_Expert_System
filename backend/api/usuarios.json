@@ -1,1 +1,10 @@
-
+{
+  "admin_bigtools": {
+    "password": "bigtools_admin_2025",
+    "rol": "administrador"
+  },
+  "tecnico_1": {
+    "password": "tech_pass_123",
+    "rol": "tecnico_libre"
+  }
+}
