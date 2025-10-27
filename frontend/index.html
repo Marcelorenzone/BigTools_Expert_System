@@ -2,57 +2,53 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Big Tools | Chatbot de Diagnóstico</title>
+    <title>Big Tools | Sistema Experto de Diagnóstico</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="login-container">
-        <h2>Acceso Big Tools</h2>
-        <input type="text" id="username" placeholder="Usuario (admin/tecnico_1)">
-        <input type="password" id="password" placeholder="Contraseña">
-        <button onclick="loginAndStartChat()">Iniciar Sesión</button>
+    
+    <header id="header">
+        <div id="logo-placeholder">BIG TOOLS</div>
+        <h1>Asistente de Diagnóstico Técnico</h1>
+    </header>
+
+    <div id="login-container" class="card">
+        <h2>Acceso a Plataforma</h2>
+        <input type="text" id="username" placeholder="Usuario (tecnico_1)" required>
+        <input type="password" id="password" placeholder="Contraseña" required>
+        <button onclick="loginAndStartChat()">INICIAR SESIÓN</button>
     </div>
 
-    <div id="chat-container" style="display:none;">
-        <h1>🤖 Chatbot de Diagnóstico Big Tools</h1>
-        <div id="messages"></div>
+    <div id="chat-container" class="card" style="display:none;">
+        
+        <div id="messages">
+            </div>
 
         <div id="controls">
             <select id="machine-select"></select>
-            <textarea id="user-input" placeholder="Describe el problema (ej: El motor no arranca)"></textarea>
-            <button onclick="sendMessage()">Enviar</button>
+            
+            <div id="initial-input-group">
+                <textarea id="user-input" placeholder="Describe el problema (ej: El motor no arranca)"></textarea>
+                <button onclick="sendMessage()">ENVIAR DIAGNÓSTICO</button>
+            </div>
+            
             <div id="yes-no-buttons" style="display:none;">
-                <button onclick="sendResponse('si')">Sí</button>
-                <button onclick="sendResponse('no')">No</button>
+                <button onclick="sendResponse('si')" class="yes-btn">SÍ</button>
+                <button onclick="sendResponse('no')" class="no-btn">NO</button>
             </div>
         </div>
-        
-        <p id="status-message"></p>
     </div>
 
     <script>
+        // *** MANTENER EL CÓDIGO JAVASCRIPT SIN CAMBIOS ***
+        // (Copiar y pegar aquí el código JS completo del paso anterior)
+
         const API_URL = 'http://127.0.0.1:5000/api/diagnostico';
         let MACHINE_OPTIONS = {};
         let authHeader = '';
-        let estadoSesion = null; // Memoria del motor de inferencia
+        let estadoSesion = null; 
 
-        // --- AUTENTICACIÓN ---
-        function loginAndStartChat() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
-            const encoded = btoa(`${username}:${password}`);
-            authHeader = `Basic ${encoded}`;
-
-            // Intenta una llamada simple para verificar credenciales (usando el listar)
-            fetchMachines();
-
-            document.getElementById('login-container').style.display = 'none';
-            document.getElementById('chat-container').style.display = 'block';
-            addMessage('system', 'Acceso concedido. Por favor, selecciona una máquina y describe el problema.');
-        }
-
-        // --- CHATBOT CORE LOGIC ---
-
+        // Función de utilidad para agregar mensajes
         function addMessage(sender, text) {
             const msgDiv = document.getElementById('messages');
             const p = document.createElement('p');
@@ -62,9 +58,8 @@
             msgDiv.scrollTop = msgDiv.scrollHeight;
         }
 
+        // Simulación de fetchMachines para el ejemplo
         async function fetchMachines() {
-            // Este endpoint debería listar las máquinas disponibles
-            // En un sistema real, crearías un endpoint para esto, pero lo simulamos
              MACHINE_OPTIONS = {
                 "karcher_hds": "Hidrolavadora Kärcher HDS",
                 "lincoln_ranger": "Soldadora Lincoln RANGER 305D",
@@ -77,6 +72,21 @@
                 select.add(option);
             }
         }
+        
+        // Ejecutar fetchMachines al cargar
+        fetchMachines();
+
+
+        function loginAndStartChat() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const encoded = btoa(`${username}:${password}`);
+            authHeader = `Basic ${encoded}`;
+
+            document.getElementById('login-container').style.display = 'none';
+            document.getElementById('chat-container').style.display = 'flex';
+            addMessage('system', 'Acceso concedido. Por favor, selecciona una máquina y describe el problema.');
+        }
 
         function sendMessage() {
             const machineId = document.getElementById('machine-select').value;
@@ -84,7 +94,7 @@
             const description = userInput.value;
             
             if (estadoSesion !== null) {
-                addMessage('system', 'Por favor, usa los botones "Sí" o "No" para continuar el diagnóstico.');
+                addMessage('system', 'Por favor, usa los botones "SÍ" o "NO" para continuar el diagnóstico.');
                 return;
             }
 
@@ -96,11 +106,13 @@
             addMessage('user', description);
             userInput.value = '';
             
-            // Iniciar diagnóstico (Primera llamada)
+            // Ocultar campo de texto, mostrar botones si es necesario
+            document.getElementById('initial-input-group').style.display = 'none';
+            
             sendToAPI({
                 id_maquina: machineId,
                 descripcion: description,
-                estado: null // Indica inicio
+                estado: null 
             });
         }
 
@@ -109,18 +121,17 @@
 
             addMessage('user', response.toUpperCase());
             
-            // Continuar diagnóstico (Llamadas subsiguientes)
+            document.getElementById('yes-no-buttons').style.display = 'none'; // Ocultar mientras se espera la respuesta
+
             sendToAPI({
                 id_maquina: estadoSesion.id_maquina,
                 respuesta: response,
-                estado: estadoSesion // El objeto de estado es la memoria
+                estado: estadoSesion
             });
-            
-            document.getElementById('yes-no-buttons').style.display = 'none';
         }
 
-
         async function sendToAPI(payload) {
+            document.getElementById('status-message').textContent = 'Conectando con el Motor de Inferencia...';
             try {
                 const response = await fetch(API_URL, {
                     method: 'POST',
@@ -132,35 +143,33 @@
                 });
 
                 const data = await response.json();
-                
+                document.getElementById('status-message').textContent = '';
+
                 if (data.error) {
                     addMessage('system', `ERROR: ${data.error}`);
                     estadoSesion = null;
                     return;
                 }
 
-                // 1. Guardar el nuevo estado de la sesión
                 estadoSesion = data.estado || null;
 
                 // 2. Procesar la respuesta y actualizar la UI
-                if (data.tipo === 'pregunta') {
-                    addMessage('system', data.pregunta);
+                if (data.tipo === 'pregunta' || data.tipo === 'instruccion') {
+                    addMessage('system', data.texto);
                     document.getElementById('yes-no-buttons').style.display = 'flex';
-                } else if (data.tipo === 'instruccion') {
-                    addMessage('system', `INSTRUCCIÓN (${data.estado.modo.toUpperCase()}): ${data.texto}`);
-                    addMessage('system', "¿Se solucionó el problema con este paso?");
-                    document.getElementById('yes-no-buttons').style.display = 'flex';
+                    document.getElementById('initial-input-group').style.display = 'none';
                 } else if (data.tipo === 'final') {
-                    addMessage('system', `FIN DE SESIÓN: ${data.mensaje}`);
+                    addMessage('system', `SESIÓN FINALIZADA: ${data.mensaje}`);
                     estadoSesion = null;
+                    // Mostrar campo de texto para nuevo diagnóstico
+                    document.getElementById('initial-input-group').style.display = 'flex';
                 }
 
             } catch (error) {
-                addMessage('system', "Lo siento, la API no respondió. Asegúrate de que el servidor está corriendo en http://127.0.0.1:5000.");
+                document.getElementById('status-message').textContent = '⚠️ API no respondió. Asegúrese de que el servidor Flask esté activo.';
                 console.error("Fetch error:", error);
             }
         }
-        
     </script>
 </body>
 </html>
