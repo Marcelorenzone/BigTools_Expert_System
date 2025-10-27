@@ -1,79 +1,160 @@
+:root {
+    --primary-red: #E31C25; /* Rojo Intenso de Big Tools */
+    --primary-green: #4CAF50; /* Verde para 'Sí' (Contraste de Acción) */
+    --text-dark: #333;
+    --bg-white: #ffffff;
+    --border-light: #ddd;
+}
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin: 0;
-    padding: 20px;
+    padding: 0;
     background-color: #f4f4f4;
+    color: var(--text-dark);
+}
+
+/* --- ENCABEZADO Y LOGO --- */
+#header {
+    background-color: var(--primary-red);
+    color: var(--bg-white);
+    padding: 15px 30px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+#logo-placeholder {
+    font-size: 24px;
+    font-weight: 900;
+    margin-right: 20px;
+    padding: 5px 10px;
+    border: 2px solid var(--bg-white);
+    line-height: 1;
+}
+
+#header h1 {
+    font-size: 18px;
+    margin: 0;
+    font-weight: 300;
+}
+
+
+/* --- CONTENEDORES PRINCIPALES --- */
+.card {
+    max-width: 600px;
+    margin: 20px auto;
+    background: var(--bg-white);
+    padding: 30px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 #chat-container {
-    max-width: 600px;
-    margin: 0 auto;
-    background: white;
-    padding: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+    height: auto;
+    min-height: 500px;
 }
 
+/* --- PANTALLA DE MENSAJES --- */
 #messages {
     height: 300px;
-    overflow-y: scroll;
-    border: 1px solid #ccc;
-    padding: 10px;
-    margin-bottom: 15px;
-    background-color: #f9f9f9;
+    min-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--border-light);
+    padding: 15px;
+    border-radius: 6px;
+    background-color: #fafafa;
+    flex-grow: 1;
 }
 
 #messages p {
-    margin: 5px 0;
-    padding: 5px;
-    border-radius: 4px;
+    margin: 10px 0;
+    padding: 8px 12px;
+    border-radius: 18px;
+    font-size: 14px;
 }
 
 .system {
-    background-color: #e6f7ff;
-    color: #005f79;
+    background-color: #ffe6e6; /* Rojo muy pálido para el sistema */
+    color: var(--primary-red);
+    border-left: 3px solid var(--primary-red);
+    text-align: left;
 }
 
 .user {
     background-color: #f0f0f0;
+    color: var(--text-dark);
     text-align: right;
+    margin-left: 30%;
 }
 
-#controls {
+.system strong {
+    color: #444; /* Distinguir el rol */
+}
+
+
+/* --- CONTROLES Y FORMULARIO --- */
+input, textarea, select, button {
+    padding: 12px;
+    border: 1px solid var(--border-light);
+    border-radius: 5px;
+    font-size: 16px;
+    box-sizing: border-box;
+    width: 100%; /* Asegura que se estiren al 100% en sus contenedores */
+}
+
+#controls, #initial-input-group {
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-#yes-no-buttons button {
-    padding: 10px 20px;
-    cursor: pointer;
-    border: none;
-    border-radius: 5px;
-    font-weight: bold;
-    flex-grow: 1;
-}
-
-#yes-no-buttons button:first-child {
-    background-color: #4CAF50;
-    color: white;
-    margin-right: 10px;
-}
-
-#yes-no-buttons button:last-child {
-    background-color: #f44336;
-    color: white;
-}
-
-textarea, input[type="text"], input[type="password"], select {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 100%;
-    box-sizing: border-box;
-}
-
 #user-input {
-    resize: none;
-    height: 60px;
+    resize: vertical;
+    min-height: 50px;
+}
+
+#initial-input-group button {
+    background-color: var(--primary-red);
+    color: var(--bg-white);
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#initial-input-group button:hover {
+    background-color: #b3141a;
+}
+
+/* --- BOTONES SÍ/NO --- */
+#yes-no-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+#yes-no-buttons button {
+    flex-basis: 48%;
+    font-weight: bold;
+    padding: 12px 0;
+}
+
+.yes-btn {
+    background-color: var(--primary-green);
+    color: var(--bg-white);
+}
+
+.no-btn {
+    background-color: var(--primary-red);
+    color: var(--bg-white);
+}
+
+#status-message {
+    font-style: italic;
+    color: var(--primary-red);
+    font-size: 12px;
+    margin-top: -5px;
 }
